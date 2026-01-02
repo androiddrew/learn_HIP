@@ -1,4 +1,5 @@
 #include <hip/hip_runtime.h>
+#include <iostream>
 
 // A GPU kernel must be prefixed with __global__to allow the compiler to generate
 // GPU specific code
@@ -11,6 +12,25 @@ __global__ void gpuHello() {
 }
 
 int main(){
+	// check if a GPU is present
+	int deviceCount = 0;
+	hipGetDeviceCount(&deviceCount);
+
+	if (deviceCount == 0) {
+		std::cout << "No HIP-capable devices found!" << std::endl;
+		return 1;
+	}
+	
+	// get HIP device information
+	hipDeviceProp_t props;
+	int deviceId;
+
+	hipGetDevice(&deviceId);
+	hipGetDeviceProperties(&props, deviceId);
+
+	std::cout << "Running on: " << props.name << std::endl;
+	std::cout << "Compute Capability: " << props.major << "." << props.minor << std::endl;
+
 	//<<<1,1>>> here is inserted between the function name and the parameter list.
 	//This denotes a Grid number and a block number. Here we are creating
 	//a single thread in the kernel by creating one grid with a block with one thread.
