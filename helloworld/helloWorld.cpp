@@ -21,6 +21,11 @@ int main(){
 	//gpuHello<<<2,6>>>();
 	//Tells the CPU to wait until the GPU is done. At this point ROCm runtime flushes
 	// the shared GPU string buffer to stdout
-	hipDeviceSynchronize();
+	hipError_t err = hipDeviceSynchronize();
+	if (err != hipSuccess) {
+		printf("HIP Error: %s\n", hipGetErrorString(err));
+	} else {
+		printf("Kernel executed and synchronized successfully.\n");
+	}
 }
 
