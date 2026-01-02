@@ -32,13 +32,11 @@ int main(){
 	std::cout << "Compute Capability: " << props.major << "." << props.minor << std::endl;
 
 	//<<<1,1>>> here is inserted between the function name and the parameter list.
-	//This denotes a Grid number and a block number. Here we are creating
-	//a single thread in the kernel by creating one grid with a block with one thread.
-	//You could change that to <<<2,6>>> and get 2 blocks each with 6 threads. Each thread
+	//This denotes creating a Grid of one block with one thread.
+	//You could change that to <<<2,6>>> and get a grid of 2 blocks each with 6 threads. Each thread
 	//executing it's own instance of the kernel.
 	gpuHello<<<4,4>>>();
-	//
-	//gpuHello<<<2,6>>>();
+
 	//Tells the CPU to wait until the GPU is done. At this point ROCm runtime flushes
 	// the shared GPU string buffer to stdout
 	hipError_t err = hipDeviceSynchronize();
